@@ -6,7 +6,7 @@ A blunt StubFactory that helps to test tightly coupled code, but handle with car
 
 Add this line to your application's Gemfile:
 
-    gem 'stub_factory'
+    gem 'blunt_stub_factory'
 
 And then execute:
 
@@ -14,12 +14,13 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install stub_factory
+    $ gem install blunt_stub_factory
 
 ## Usage
 
 ```ruby
 require 'stub_factory'
+# beware: StubFactory resides in the stub_factory file, not as it's gemname would indicate (the name stub_factory was already taken...)
 
 Class A
   attr_reader :test, :test2
