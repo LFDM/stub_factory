@@ -1,5 +1,6 @@
 require 'stub_factory/version'
 require 'stub_factory/exceptions'
+require 'stub_factory/helpers'
 
 module StubFactory
   @stub_factory_paths = %w{ spec/factories }
@@ -35,7 +36,7 @@ module StubFactory
       raise HelperError, "A helper for #{helper} has already been defined" if helper_defined?(helper)
       @helpers << helper.to_sym
 
-      Object.class_eval <<-STR
+      Helpers.class_eval <<-STR
         def stub_#{helper}(vars: {}, methods: {})
           #{klass}.new_stub(vars: vars, methods: methods, template: :#{helper})
         end
