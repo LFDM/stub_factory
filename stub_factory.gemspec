@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'stub_factory/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "stub_factory"
+  spec.name          = "blunt_stub_factory"
   spec.version       = StubFactory::VERSION
   spec.authors       = ["LFDM"]
   spec.email         = ["1986gh@gmail.com"]
