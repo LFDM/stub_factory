@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = StubFactory::VERSION
   spec.authors       = ["LFDM"]
   spec.email         = ["1986gh@gmail.com"]
-  spec.description   = %q{Stub Factory}
-  spec.summary       = %q{Stub Factory}
+  spec.description   = %q{Simple StubFactory for rspec}
+  spec.summary       = %q{Simple StubFactory for rspec, that can help with tightly coupled code}
   spec.homepage      = ""
   spec.license       = "MIT"
 
