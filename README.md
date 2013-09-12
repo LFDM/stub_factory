@@ -17,7 +17,10 @@ Or install it yourself as:
     $ gem install stub_factory
 
 ## Usage
+
 ```ruby
+require 'stub_factory'
+
 Class A
   attr_reader :test, :test2
   
