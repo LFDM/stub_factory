@@ -6,6 +6,27 @@ describe StubFactory do
     class A; attr_reader :test; end
   end
 
+  describe ".define_template" do
+    after :each do
+      # delete the just created template because it would persist
+      StubFactory.instance_variable_get(:@templates).delete(:test)
+    end
+
+    it "defines a template" do
+      StubFactory.define_template(:test) { {} }
+      StubFactory.template_defined?(:test).should be_true
+    end
+
+    it "templates can only be defined once" do
+      StubFactory.define_template(:test) { {} }
+      expect { StubFactory.define_template(:test) { {} } }.to raise_error(StubFactory::TemplateError)
+    end
+
+    it "templates need to be defined with a block" do
+      expect { StubFactory.define_template(:test).to raise_error(StubFactory::TemplateError) }
+    end
+  end
+
   describe "#new_stub" do
     it "returns a new instance" do
       A.new_stub.should be_an_instance_of A
@@ -17,14 +38,12 @@ describe StubFactory do
     end
 
     context "when a default template exists" do
-      module StubFactory
-        def stub_template_for_a
-          { test: 1 }
-        end
+      StubFactory.define_template(:a) do
+        { test: 5 }
       end
 
       it "instantiates with default values of a template, deriving from class name" do
-        A.new_stub.test.should == 1
+        A.new_stub.test.should == 5
       end
 
       it "overrides template when instantiated with vars hash" do
@@ -40,10 +59,8 @@ describe StubFactory do
     end
 
     context "when a custom template exists" do
-      module StubFactory
-        def stub_template_for_esse
-          { test: 12 }
-        end
+      StubFactory.define_template(:esse) do
+        { test: 12 }
       end
 
       it "takes custom template as argument" do

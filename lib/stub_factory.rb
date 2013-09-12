@@ -1,11 +1,58 @@
 require 'stub_factory/version'
+require 'stub_factory/exceptions'
 
 module StubFactory
+  @stub_factory_paths = %w{ spec/factories }
+  @stub_factory_helpers_paths = %w{ spec/support/helpers }
+  @templates = {}
+
+  class << self
+    def to_underscored_symbol(class_name)
+      # Namespace::TestClass to :namespace__test_class
+      res = class_name.to_s.dup
+      res.gsub!(/([a-z])([A-Z])/) { "#{$1}_#{$2}" }
+      res.gsub!(/::/, "__")
+      res.downcase.to_sym
+    end
+
+    def define_template(template_name)
+      tn = template_name.to_sym
+      raise TemplateError, "Template already defined" if template_defined?(tn)
+      raise TemplateError, "Templates need to be defined with a block" unless block_given?
+      values = yield
+      raise TemplateError, "Block must contain a Hash" unless values.kind_of?(Hash)
+      @templates[tn] = values
+    end
+
+    def template_defined?(template)
+      return unless template
+      @templates.has_key?(template.to_sym)
+    end
+
+    def template_for(template)
+      @templates[template.to_sym]
+    end
+
+    def require_factories
+      require 'pry'; binding.pry
+      File.expand_path("blabl")
+
+    end
+
+    def require_helpers
+    end
+
+
+  end
+
+  require_factories
+  require_helpers
+
   def new_stub(vars: {}, methods: {}, template: StubFactory.to_underscored_symbol(self.name))
     obj = allocate
 
-    if respond_to?(template_for(template))
-      vars = send(template_for(template)).merge!(vars)
+    if StubFactory.template_defined?(template)
+      vars = StubFactory.template_for(template).merge(vars)
     end
 
     set_instance_variables(obj, vars)
@@ -13,19 +60,7 @@ module StubFactory
     obj
   end
 
-  def self.to_underscored_symbol(class_name)
-    # Namespace::TestClass to :namespace__test_class
-    res = class_name.to_s.dup
-    res.gsub!(/([a-z])([A-Z])/) { "#{$1}_#{$2}" }
-    res.gsub!(/::/, "__")
-    res.downcase.to_sym
-  end
-
   private
-
-  def template_for(template)
-    "stub_template_for_#{template}".to_sym
-  end
 
   def set_instance_variables(obj, vars)
     vars.each do |var, val|
