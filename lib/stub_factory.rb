@@ -1,3 +1,4 @@
+require 'stub_factory/version'
 require_relative 'stubs'
 
 module StubFactory
