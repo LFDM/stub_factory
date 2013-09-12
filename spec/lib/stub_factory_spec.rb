@@ -28,7 +28,7 @@ describe StubFactory do
   end
 
   describe ".define_helper" do
-    it "defines helper methods - shortcuts that use a specific template (first argument) on a new stub of a given class (second argument)" do
+    it 'defines helper methods - shortcuts #stub_#{helper} that use a specific template (first argument) on a new stub of a given class (second argument)' do
       StubFactory.define_template(:helper) { { test: 13 } }
       StubFactory.define_helper(:helper, :A)
 
@@ -106,7 +106,7 @@ describe StubFactory do
         end
       end
 
-      it "should leave methods intact without methods hash" do
+      it "leaves methods intact when not overwritten by methods hash" do
         A.new_stub.test_method.should == 12
       end
 
@@ -115,7 +115,7 @@ describe StubFactory do
         o.test_method.should == 1
       end
 
-      it "other instances' methods are not overridden by methods hash" do
+      it "other instances' methods are not overwritten by methods hash - it happens on a singleton level" do
         a = A.new_stub(methods: { test_method: 1 })
         b = A.new_stub(methods: { test_method: 2 })
         c = A.new_stub

@@ -8,13 +8,8 @@ module StubFactory
   @helpers   = []
 
   class << self
-    def to_underscored_symbol(class_name)
-      # Namespace::TestClass to :namespace__test_class
-      res = class_name.to_s.dup
-      res.gsub!(/([a-z])([A-Z])/) { "#{$1}_#{$2}" }
-      res.gsub!(/::/, "__")
-      res.downcase.to_sym
-    end
+
+####### Template Handing #######
 
     def define_template(template_name)
       tn = template_name.to_sym
@@ -34,6 +29,8 @@ module StubFactory
       @templates[template.to_sym]
     end
 
+####### Helper Handling #######
+
     def define_helper(helper, klass)
       raise HelperError, "A helper for #{helper} has already been defined" if helper_defined?(helper)
       @helpers << helper.to_sym
@@ -49,13 +46,7 @@ module StubFactory
       @helpers.include?(helper.to_sym)
     end
 
-    def add_factory_path(path)
-      @stub_factory_paths << path
-    end
-
-    def add_helpers_path(path)
-      @stub_factory_helpers_paths << path
-    end
+####### Requiring Files #######
 
     def recursive_require(rel_paths)
       rel_paths.each do |rel_path|
@@ -73,10 +64,22 @@ module StubFactory
     end
   end
 
+####### Custom Load Paths - currently not enabled #######
+
+    #def add_factory_path(path)
+    #  @stub_factory_paths << path
+    #end
+
+    #def add_helpers_path(path)
+    #  @stub_factory_helpers_paths << path
+    #end
+
   recursive_require(@stub_factory_paths)
   recursive_require(@stub_factory_helpers_paths)
 
-  def new_stub(vars: {}, methods: {}, template: StubFactory.to_underscored_symbol(self.name))
+####### Public Method #######
+
+  def new_stub(vars: {}, methods: {}, template: to_underscored_symbol(self.name))
     obj = allocate
 
     if StubFactory.template_defined?(template)
@@ -103,6 +106,15 @@ module StubFactory
       end
     end
   end
+
+  def to_underscored_symbol(class_name)
+    # Namespace::TestClass to :namespace__test_class
+    res = class_name.to_s.dup
+    res.gsub!(/([a-z])([A-Z])/) { "#{$1}_#{$2}" }
+    res.gsub!(/::/, "__")
+    res.downcase.to_sym
+  end
+  module_function :to_underscored_symbol
 end
 
 class Class; include StubFactory; end
