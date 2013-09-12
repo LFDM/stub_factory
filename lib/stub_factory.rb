@@ -5,6 +5,7 @@ module StubFactory
   @stub_factory_paths = %w{ spec/factories }
   @stub_factory_helpers_paths = %w{ spec/support/helpers }
   @templates = {}
+  @helpers   = []
 
   class << self
     def to_underscored_symbol(class_name)
@@ -31,6 +32,21 @@ module StubFactory
 
     def template_for(template)
       @templates[template.to_sym]
+    end
+
+    def define_helper(helper, klass)
+      raise HelperError, "A helper for #{helper} has already been defined" if helper_defined?(helper)
+      @helpers << helper.to_sym
+
+      Object.class_eval <<-STR
+        def stub_#{helper}(vars: {}, methods: {})
+          #{klass}.new_stub(vars: vars, methods: methods, template: :#{helper})
+        end
+      STR
+    end
+
+    def helper_defined?(helper)
+      @helpers.include?(helper.to_sym)
     end
 
     def add_factory_path(path)

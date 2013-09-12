@@ -27,6 +27,26 @@ describe StubFactory do
     end
   end
 
+  describe ".define_helper" do
+    it "defines helper methods - shortcuts that use a specific template (first argument) on a new stub of a given class (second argument)" do
+      StubFactory.define_template(:helper) { { test: 13 } }
+      StubFactory.define_helper(:helper, :A)
+
+      stub_helper.should be_an_instance_of A
+      stub_helper.test.should == 13
+    end
+
+    it "helpers cannot be defined twice" do
+      StubFactory.define_helper(:helper2, :A)
+      expect { StubFactory.define_helper(:helper2, :A) }.to raise_error(StubFactory::HelperError)
+    end
+
+    it "helpers can be defined in files - default path is spec/support/helpers" do
+      # required_helper is defined in #spec/support/helper_test.rb
+      stub_required_helper.should be_an_instance_of A
+    end
+  end
+
   describe "#new_stub" do
     it "returns a new instance" do
       A.new_stub.should be_an_instance_of A
@@ -57,7 +77,7 @@ describe StubFactory do
         o.test.should be_nil
       end
 
-      it "templates are defined in files - their default path is spec/factories" do
+      it "templates can be defined in files - their default path is spec/factories" do
         # required_template is defined in #spec/factories/template_test.rb
         A.new_stub(template: :required_template).test.should == 11
       end
