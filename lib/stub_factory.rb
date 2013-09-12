@@ -33,20 +33,32 @@ module StubFactory
       @templates[template.to_sym]
     end
 
-    def require_factories
-      require 'pry'; binding.pry
-      File.expand_path("blabl")
-
+    def add_factory_path(path)
+      @stub_factory_paths << path
     end
 
-    def require_helpers
+    def add_helpers_path(path)
+      @stub_factory_helpers_paths << path
     end
 
+    def recursive_require(rel_paths)
+      rel_paths.each do |rel_path|
+        require_path(rel_path)
+      end
+    end
 
+    def require_path(rel_path)
+      path = File.expand_path(rel_path)
+
+      if File.exists?(path)
+        require "#{path}" if File.file?(path)
+        Dir["#{path}/*"].each { |file| require_path(file) }
+      end
+    end
   end
 
-  require_factories
-  require_helpers
+  recursive_require(@stub_factory_paths)
+  recursive_require(@stub_factory_helpers_paths)
 
   def new_stub(vars: {}, methods: {}, template: StubFactory.to_underscored_symbol(self.name))
     obj = allocate

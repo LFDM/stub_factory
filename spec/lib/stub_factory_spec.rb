@@ -56,6 +56,11 @@ describe StubFactory do
         o = A.new_stub(template: nil)
         o.test.should be_nil
       end
+
+      it "templates are defined in files - their default path is spec/factories" do
+        # required_template is defined in #spec/factories/template_test.rb
+        A.new_stub(template: :required_template).test.should == 11
+      end
     end
 
     context "when a custom template exists" do
