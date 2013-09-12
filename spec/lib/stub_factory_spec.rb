@@ -1,6 +1,4 @@
-require 'spec_helper'
-require_relative '../../lib/stub_factory.rb'
-
+require 'stub_factory'
 
 describe StubFactory do
   before :all do
@@ -26,7 +24,6 @@ describe StubFactory do
       end
 
       it "instantiates with default values of a template, deriving from class name" do
-
         A.new_stub.test.should == 1
       end
 
@@ -84,6 +81,17 @@ describe StubFactory do
         a.test_method.should == 1
         b.test_method.should == 2
         c.test_method.should == 12
+      end
+    end
+
+    context "how default template lookup works" do
+      it "takes class name of self and returns an underscored symobl, namespaces are marked with double underscore" do
+        module TestNamespace
+          class TestClass; end
+        end
+
+        class_name = TestNamespace::TestClass.new.class.name
+        StubFactory.to_underscored_symbol(class_name).should == :test_namespace__test_class
       end
     end
   end

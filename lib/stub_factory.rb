@@ -1,17 +1,24 @@
 require 'stub_factory/version'
-require_relative 'stubs'
 
 module StubFactory
-  def new_stub(vars: {}, methods: {}, template: self.name.underscore)
+  def new_stub(vars: {}, methods: {}, template: StubFactory.to_underscored_symbol(self.name))
     obj = allocate
 
-    if self.methods.include?(template_for(template))
+    if respond_to?(template_for(template))
       vars = send(template_for(template)).merge!(vars)
     end
 
     set_instance_variables(obj, vars)
     override_methods(obj, methods)
     obj
+  end
+
+  def self.to_underscored_symbol(class_name)
+    # Namespace::TestClass to :namespace__test_class
+    res = class_name.to_s.dup
+    res.gsub!(/([a-z])([A-Z])/) { "#{$1}_#{$2}" }
+    res.gsub!(/::/, "__")
+    res.downcase.to_sym
   end
 
   private
