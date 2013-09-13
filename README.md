@@ -1,5 +1,4 @@
 # StubFactory
-# ArrayScanner
 [![Build Status](https://travis-ci.org/LFDM/stub_factory.png)](https://travis-ci.org/LFDM/stub_factory)
 [![Coverage Status](https://coveralls.io/repos/LFDM/stub_factory/badge.png)](https://coveralls.io/r/LFDM/stub_factory)
 [![Dependency Status](https://gemnasium.com/LFDM/stub_factory.png)](https://gemnasium.com/LFDM/stub_factory)
