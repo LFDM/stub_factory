@@ -1,9 +1,5 @@
+require 'spec_helper'
 require 'stub_factory'
-
-# Methods defined by .define_helper will not work without this:
-RSpec.configure do |config|
-  config.include StubFactory::Helpers
-end
 
 describe StubFactory do
   before :all do

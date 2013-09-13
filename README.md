@@ -1,4 +1,8 @@
 # StubFactory
+# ArrayScanner
+[![Build Status](https://travis-ci.org/LFDM/stub_factory.png)](https://travis-ci.org/LFDM/stub_factory)
+[![Coverage Status](https://coveralls.io/repos/LFDM/stub_factory/badge.png)](https://coveralls.io/r/LFDM/stub_factory)
+[![Dependency Status](https://gemnasium.com/LFDM/stub_factory.png)](https://gemnasium.com/LFDM/stub_factory)
 
 A blunt StubFactory that helps to test tightly coupled code, but handle with care: This is not a best practice. If you find yourself relying on this a lot, you might have to rethink your design. 
 
