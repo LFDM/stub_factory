@@ -9,7 +9,7 @@ A blunt StubFactory that helps to test tightly coupled code, but handle with car
 
 Add this line to your application's Gemfile:
 
-    gem 'blunt_stub_factory'
+    gem 'blunt_stub_factory', require: 'stub_factory'
 
 And then execute:
 
