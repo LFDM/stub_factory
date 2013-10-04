@@ -52,7 +52,7 @@ b.test
 ```
 
 Default as well as custom templates to overwrite variables can be defined - StubFactory automatically looks for such statements
-in your spec/factories folder.
+in your spec/factories folder. Only files named template_***.rb are loaded.
 ```ruby
 StubFactory.define_template(:a) do
   { test2 = "template value" }
@@ -90,7 +90,7 @@ b.a_method
 ```
 
 For ease of use, helper methods can be defined when they are included in your RSpec configuarion. 
-Place define_helper statements in your spec/support/helpers folder.
+Place define_helper statements in your spec/support/helpers folder.  Only files named stub_***.rb are loaded.
 ```ruby
 RSpec.configure do |config|
   config.include StubFactory::Helpers
