@@ -59,7 +59,7 @@ module StubFactory
       path = File.expand_path(rel_path)
 
       if File.exists?(path)
-        require "#{path}" if File.file?(path)
+        require "#{path}" if File.file?(path) && path.match(/\/(stub_|template_)[^\/]*$/)
         Dir["#{path}/*"].each { |file| require_path(file) }
       end
     end

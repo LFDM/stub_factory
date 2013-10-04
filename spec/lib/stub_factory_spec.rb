@@ -42,9 +42,14 @@ describe StubFactory do
       expect { StubFactory.define_helper(:helper2, :A) }.to raise_error(StubFactory::HelperError)
     end
 
-    it "helpers can be defined in files - default path is spec/support/helpers" do
-      # required_helper is defined in #spec/support/helper_test.rb
+    it "helpers can be defined in files called stub_***.rb - default path is spec/support/helpers" do
+      # required_helper is defined in #spec/support/stub_helper_test.rb
       stub_required_helper.should be_an_instance_of A
+    end
+
+    it "to allow other files in this folder wrongly named files are not consumed" do
+      # wrong_helper is defined in #spec/support/wrong_helper_test.rb
+      expect { stub_wrong_helper }.to raise_error NameError
     end
   end
 
@@ -78,9 +83,15 @@ describe StubFactory do
         o.test.should be_nil
       end
 
-      it "templates can be defined in files - their default path is spec/factories" do
+      it "templates can be defined in files called template_**.rb - their default path is spec/factories" do
         # required_template is defined in #spec/factories/template_test.rb
         A.new_stub(template: :required_template).test.should == 11
+      end
+
+      it "to allow other files in this folder wrongly named files are not consumed" do
+        # wrong_template is defined in #spec/factories/wrong_test.rb
+        # with the variable test == 11
+        A.new_stub(template: :wrong_template).test.should be_nil
       end
     end
 
