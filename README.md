@@ -25,7 +25,7 @@ Or install it yourself as:
 require 'stub_factory'
 # beware: StubFactory resides in the stub_factory file, not as it's gemname would indicate (the name stub_factory was already taken...)
 
-Class A
+class A
   attr_reader :test, :test2
   
   def initialize
